@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>貓眼電影 TOP100 經典排行榜 - 影史殿堂</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="精選貓眼電影經典TOP100排行榜，包含高畫質電影海報、詳細演員陣容、上映時間與貓眼評分。支援多維度篩選、即時搜尋與排序。">
+  <meta name="keywords" content="貓眼電影, 電影排行榜, 電影TOP100, 經典電影, 肖申克的救贖, 霸王別姬, 我不是藥神">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Background Gradients -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Header Section -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-badge">CLASSIC</span>
+        <h1 class="brand-title">貓眼電影 <span class="gradient-text">TOP 100</span></h1>
+      </div>
+      <p class="brand-subtitle">收錄影史殿堂級经典巨作，按評分與熱度綜合排列</p>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="app-container">
+    
+    <!-- Control Panel: Filters, Search, Views -->
+    <section class="control-panel" aria-label="篩選與搜尋控制面板">
+      
+      <!-- Search Input -->
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" placeholder="搜尋片名、演員..." autocomplete="off">
+        <button id="clear-search" class="clear-btn" aria-label="清除搜尋" style="display: none;">&times;</button>
+      </div>
+
+      <!-- Filters & Sorting Group -->
+      <div class="filter-sort-group">
+        <!-- Decade Filters -->
+        <div class="filter-group">
+          <span class="group-label">年代篩選</span>
+          <div class="filter-buttons" id="decade-filters">
+            <button class="filter-btn active" data-decade="all">全部</button>
+            <button class="filter-btn" data-decade="1990">90年代及以前</button>
+            <button class="filter-btn" data-decade="2000">2000年代</button>
+            <button class="filter-btn" data-decade="2010">2010年代</button>
+            <button class="filter-btn" data-decade="2020">2020年代</button>
+          </div>
+        </div>
+
+        <!-- Sorting Selector -->
+        <div class="sort-group">
+          <span class="group-label">排序方式</span>
+          <select id="sort-select" class="custom-select">
+            <option value="rank-asc">排名：從高到低 (1 - 100)</option>
+            <option value="rank-desc">排名：從低到高 (100 - 1)</option>
+            <option value="score-desc">評分：最高優先</option>
+            <option value="date-desc">上映：最新優先</option>
+            <option value="date-asc">上映：最舊優先</option>
+          </select>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+          <span class="group-label">版面配置</span>
+          <div class="toggle-buttons">
+            <button id="grid-view-btn" class="toggle-btn active" aria-label="網格視圖">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button id="list-view-btn" class="toggle-btn" aria-label="列表視圖">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- Movies Display Area -->
+    <section class="movies-section">
+      <!-- Info Header (shows count of matching items) -->
+      <div class="results-info">
+        共找到 <span id="results-count" class="highlight">0</span> 部電影
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-spinner" class="loading-container">
+        <div class="spinner"></div>
+        <p>載入電影資料中，請稍候...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-container" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <h3>沒有符合條件的電影</h3>
+        <p>請嘗試更換關鍵字或重設年代篩選條件。</p>
+        <button id="reset-filters-btn" class="reset-btn">重置篩選</button>
+      </div>
+
+      <!-- Grid/List container -->
+      <div id="movies-container" class="movies-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Pagination Container -->
+      <div id="pagination-container" class="pagination-container"></div>
+    </section>
+
+  </main>
+
+  <!-- Movie Detail Modal (Overlay) -->
+  <div id="movie-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-wrapper">
+      <div class="modal-bg-blur" id="modal-blur-bg"></div>
+      <button class="modal-close" id="modal-close-btn" aria-label="關閉視窗">&times;</button>
+      
+      <div class="modal-content">
+        <!-- Left: Image -->
+        <div class="modal-media">
+          <img id="modal-poster" src="" alt="電影海報" onerror="this.onerror=null; this.src=&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='385' viewBox='0 0 280 385'><rect width='100%25' height='100%25' fill='%231e293b'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2364748b' font-family='sans-serif' font-size='16'>🎬 無海報</text></svg>&quot;;">
+        </div>
+        
+        # Right: Details
+        <div class="modal-details">
+          <div class="modal-header-meta">
+            <span class="modal-rank-badge" id="modal-rank">#1</span>
+            <div class="modal-rating">
+              <span class="star-icon">★</span>
+              <span id="modal-score">9.6</span>
+            </div>
+          </div>
+          
+          <h2 class="modal-title" id="modal-title">電影名稱</h2>
+          
+          <div class="modal-meta-rows">
+            <div class="meta-row">
+              <span class="meta-label">主演陣容</span>
+              <span class="meta-value" id="modal-star">演員</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">上映時間</span>
+              <span class="meta-value" id="modal-release">上映年份</span>
+            </div>
+          </div>
+
+          <div class="modal-divider"></div>
+          
+          <div class="modal-story">
+            <h3>影片簡介</h3>
+            <p id="modal-description">這是一部極具影史代表性的經典作品。影片以精湛的藝術手法、深刻的敘事層次和卓越的演出，深深打動了全球觀眾。無論是劇本結構、導演鏡頭設計，還是演員對角色的細膩刻畫，都達到了極高的水準，是每位影迷一生必看的經典鉅作。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 貓眼電影 TOP100 排行榜練習專案 &middot; 影史殿堂</p>
+    <p class="footer-note">本網頁為爬蟲與網頁設計整合專案，數據僅用於個人教學與展示。</p>
+  </footer>
+
+  <!-- AI Chat Assistant Widget -->
+  <div id="ai-chat-widget">
+    <!-- Chat Floating Trigger Button -->
+    <button id="chat-trigger-btn" class="chat-trigger" aria-label="打開 AI 助手">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chat-icon">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span class="pulse-ring"></span>
+    </button>
+
+    <!-- Chat Window Panel -->
+    <div id="chat-window" class="chat-window" style="display: none;">
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="chat-title">
+          <span class="chat-avatar">🤖</span>
+          <div>
+            <h3>AI 電影專家</h3>
+            <span class="status-indicator online">本地/API 雙模式</span>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button id="toggle-settings-btn" class="header-action-btn" title="設定 API Key">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </button>
+          <button id="minimize-chat-btn" class="header-action-btn" title="最小化" aria-label="最小化">&times;</button>
+        </div>
+      </div>
+
+      <!-- Settings Panel (Toggled by Gear Button) -->
+      <div id="chat-settings-panel" class="settings-panel" style="display: none;">
+        <h4>AI 介接設定</h4>
+        <div class="setting-row">
+          <label for="ai-provider">模型提供者</label>
+          <select id="ai-provider" class="settings-select">
+            <option value="mock">本地端智慧模擬 (免 Key)</option>
+            <option value="gemini">Gemini API</option>
+            <option value="openai">OpenAI API</option>
+          </select>
+        </div>
+        <div class="setting-row" id="api-key-row" style="display: none;">
+          <label for="ai-api-key">API Key</label>
+          <input type="password" id="ai-api-key" placeholder="輸入 API 金鑰..." autocomplete="off">
+        </div>
+        <div class="setting-row" id="model-row" style="display: none;">
+          <label for="ai-model">模型名稱</label>
+          <select id="ai-model" class="settings-select">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <button id="save-settings-btn" class="settings-save-btn">儲存設定</button>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="chat-messages" class="chat-messages">
+        <!-- Initial Message -->
+        <div class="message ai">
+          <div class="msg-bubble">
+            你好！我是你的 AI 電影專家 🎬。我可以幫你介紹榜單電影、推薦熱門經典、分析上映時間與主演，或回答你的電影問題。
+            <br><br>
+            <i>💡 你可以在右上角設定 ⚙️ 中填寫你的 Gemini 或 OpenAI API Key 來啟用完整的 AI 大模型智慧對話！目前預設為「本地模擬模式」。</i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Bar -->
+      <form id="chat-input-form" class="chat-input-bar">
+        <textarea id="chat-input" placeholder="問點電影相關的問題..." rows="1" required></textarea>
+        <button type="submit" id="chat-send-btn" aria-label="傳送" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="send-icon">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="movies_backup.js"></script>
+  <script src="movies.js" onerror="console.warn('movies.js not found, using backup data.')"></script>
+  <script src="app.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>
